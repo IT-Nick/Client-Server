@@ -7,6 +7,7 @@
 2. [Шифрование сообщений](#Шифрование-сообщений)
 3. [Очередь](#Очередь)
 4. [Неблокирующая обработка клиентского запроса](#неблокирующая-обработка-клиентского-запроса)
+5. [Установка и запуск](#Установка-и-запуск)
     
 ## Редактирование конфига
 В конфиге можно менять [ИМЯ], [ПРИОРИТЕТ], а так же другие параметры как [ВЫВОДИМЫЕ СООБЩЕНИЯ] и [АДРЕС И ПОРТ]
@@ -85,6 +86,41 @@ var users = make([]int, 0)
 channel := make(chan string)
 go waitForInput(channel, &client)
 go handleInput(channel, &client, properties)
+```
+# Установка и запуск
+Для запуска скомпилированных программ нужно закинуть config.json в корневую папку вместе с программами и запустить сначала "server" а затем "client" и все.
+____
+Для тестирования/редактирования кода нужно скачать язык go и установить его следуя официальной инструкции:
+
+    Extract the archive you downloaded into /usr/local, creating a Go tree in /usr/local/go.
+    Important: This step will remove a previous installation at /usr/local/go, if any, prior to extracting. Please back up any data before proceeding.
+
+    For example, run the following as root or through sudo:
+
+    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.16.5.linux-amd64.tar.gz
+
+    Add /usr/local/go/bin to the PATH environment variable.
+    You can do this by adding the following line to your $HOME/.profile or /etc/profile (for a system-wide installation):
+
+    export PATH=$PATH:/usr/local/go/bin
+
+    Note: Changes made to a profile file may not apply until the next time you log into your computer. To apply the changes immediately, just run the shell             commands directly or execute them from the profile using a command such as source $HOME/.profile.
+
+    Verify that you've installed Go by opening a command prompt and typing the following command:
+
+    $ go version
+
+    Confirm that the command prints the installed version of Go.
+    
+Для компиляции программы используем команды: 
+```
+GOOS=linux GOARCH=amd64 GO111MODULE=off go build server.go
+GOOS=linux GOARCH=amd64 GO111MODULE=off go build client.go
+```
+Либо без ручного указания платформы: 
+```
+GO111MODULE=off go build server.go
+GO111MODULE=off go build client.go
 ```
 ____
 ## P.S.
