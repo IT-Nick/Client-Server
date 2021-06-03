@@ -1,15 +1,15 @@
 package main
 
 import (
-	"net"
-	"fmt"
+  "net"
+  "fmt"
   "bufio"
   "strings"
   "regexp"
   "./util"
   "./endpoint/json"
-	"time"
-	"strconv"
+  "time"
+  "strconv"
 )																																																																																							//ПАТехецкий далбаеб//ПАТехецкий далбаеб//ПАТехецкий далбаеб
 
 //хранит в себе наших пользователей и их приоритеты
@@ -126,59 +126,62 @@ func handleInput(in <-chan string, client *util.Client, props util.Properties) {
 
           //пользователь предоставил свое имя
           case "user":
-						client.Username = body
-						priority := m[client.Username]//priority - приоритет текущего клиента
+		client.Username = body
+		priority := m[client.Username]//priority - приоритет текущего клиента
 
-						sum := add(min)
-						users = append(users, priority)
+		sum := add(min)
+		users = append(users, priority)
 
-						fmt.Println("Наша очередь (первое 8 - лимит): ", users)
-						fmt.Println("Администратор под приоритетом: ", sum)
+			fmt.Println("Наша очередь (первое 8 - лимит): ", users)
+			fmt.Println("Администратор под приоритетом: ", sum)
 
-						//проверка на подключение приоритетного клиента
-						if priority <= sum {
-							util.SendClientMessage("writeandread", body, client, true, props)
-							util.SendClientMessage("readonlynewconnect", body, client, false, props)
-						} else {
-							util.SendClientMessage("readonly", body, client, true, props)
-						}
+				//проверка на подключение приоритетного клиента
+				if priority <= sum {
+					util.SendClientMessage("writeandread", body, client, true, props)
+					util.SendClientMessage("readonlynewconnect", body, client, false, props)
+				} else {
+					util.SendClientMessage("readonly", body, client, true, props)
+				}
 
-						//проверка на несуществующее имя
-						if _, ok := m[body]; ok {
-            util.SendClientMessage("connect", "", client, false, props)
-						} else {
-								util.SendClientMessage("nopermission", body, client, true, props)
-								time.Sleep(1 * time.Second)
-								client.Close(false);
-						}
+					//проверка на несуществующее имя
+					if _, ok := m[body]; ok {
+            					util.SendClientMessage("connect", "", client, false, props)
+					} else {
+						util.SendClientMessage("nopermission", body, client, true, props)
+						time.Sleep(1 * time.Second)
+						client.Close(false);
+					}
 
-					// пользователь отправил сообщение
+	  // пользователь отправил сообщение
           case "message":
-						sum := add(min)
-						priority := m[client.Username]
+		sum := add(min)
+		priority := m[client.Username]
 
-						//проверка на наличие Write&Read
-						if priority <= sum {
+		//проверка на наличие Write&Read
+		if priority <= sum {
           		util.SendClientMessage("message", body, client, false, props)
-						} else {
-									util.SendClientMessage("readonly", body, client, true, props)
-						}
+		} else {
+			util.SendClientMessage("readonly", body, client, true, props)
+		}
 
           // пользователь отключается
           case "disconnect":
-						priority := m[client.Username]
+		priority := m[client.Username]
 
-						sum := add(min)
-						thisindexremove := findMe(users, priority) //находим клиента из среза
-						users = removeIndex(users, thisindexremove) //и удаляем
+		sum := add(min)
+		//находим клиента из среза
+		thisindexremove := findMe(users, priority)
+		//и удаляем
+		users = removeIndex(users, thisindexremove)
 
-						fmt.Println("Наша очередь (первое 8 - лимит): ", users)
-						fmt.Println("Администратор под приоритетом: ", sum)
+			fmt.Println("Наша очередь (первое 8 - лимит): ", users)
+			fmt.Println("Администратор под приоритетом: ", sum)
 
-						if priority <= sum {
-							util.SendClientMessage("ifdisconnect", body, client, false, props)
-						}
-            client.Close(false);
+				if priority <= sum {
+					util.SendClientMessage("ifdisconnect", body, client, false, props)
+				}
+		
+            			client.Close(false);
           default:
             util.SendClientMessage("unrecognized", action, client, true, props)
         }
