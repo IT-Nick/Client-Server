@@ -88,9 +88,9 @@ go waitForInput(channel, &client)
 go handleInput(channel, &client, properties)
 ```
 # Установка и запуск
-Для запуска скомпилированных программ нужно закинуть config.json в корневую папку вместе с программами и запустить сначала "server" а затем "client" и все.
+Для запуска программ нужно закинуть config.json в корневую папку вместе с программами и запустить сначала "server" а затем "client" и все.
 ____
-Для тестирования/редактирования кода нужно скачать язык go и установить его следуя официальной инструкции:
+Для тестирования/редактирования кода нужно скачать язык [go](https://golang.org/) и установить его следуя официальной инструкции:
 
     Extract the archive you downloaded into /usr/local, creating a Go tree in /usr/local/go.
     Important: This step will remove a previous installation at /usr/local/go, if any, prior to extracting. Please back up any data before proceeding.
