@@ -121,6 +121,4 @@ GOOS=linux GOARCH=amd64 GO111MODULE=off go build client.go
 GO111MODULE=off go build server.go
 GO111MODULE=off go build client.go
 ```
-____
-## P.S.
-Эта штука работает. Правда я до конца не разобрался с файлами и папками в Golang, поэтому у меня дублируется util.go и возможно конфиг придется кидать в корневую папку пользователя linux (на винде все норм).
+
